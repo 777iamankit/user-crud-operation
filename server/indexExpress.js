@@ -36,7 +36,7 @@ const PORT=process.env.PORT;
 // });
 
 // app.get('/ankit')
-app.use(express.static(path.join(__dirname,"views")));
+// app.use(express.static(path.join(__dirname,"views")));
 
 app.use((req,res,next)=>{
   const secretcode=req.query.secret;
