@@ -17,6 +17,9 @@
 //   });
 // import exp from 'constants';
 import express from 'express';
+import dotenv from 'dotenv';
+dotenv.config();
+
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -25,11 +28,14 @@ const app=express()
 const __filename=fileURLToPath(import.meta.url);
 const __dirname=path.dirname(__filename);
 
-const PORT =8000;
+// const PORT =8000;
+const PORT=process.env.PORT;
 
 app.get("/ankit",(req,res)=>{
   res.sendFile(path.join(__dirname,"views","calculator.html"));
 });
+
+// app.get('/ankit')
 
 app.use(express.static(path.join(__dirname,"views")));
 
