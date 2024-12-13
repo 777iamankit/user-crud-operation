@@ -19,16 +19,18 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import mongoose  from 'mongoose';
-dotenv.config();
-
-import path from 'path';
-import { fileURLToPath } from 'url';
 import bodyParser from 'body-parser';
+dotenv.config();
+import User from './models/userModel.js';
+
+// import path from 'path';
+// import { fileURLToPath } from 'url';
+
 
 const app=express()
 
-const __filename=fileURLToPath(import.meta.url);
-const __dirname=path.dirname(__filename);
+// const __filename=fileURLToPath(import.meta.url);
+// const __dirname=path.dirname(__filename);
 
 // const PORT =8000;
 const PORT=process.env.PORT;
@@ -44,39 +46,39 @@ console.log(URL);
 // app.use(express.static(path.join(__dirname,"views")));
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({extended:false}));
 
-app.post("/name",(req,res)=>{
-  const fName=req.body.firstName;
-  const lName=req.body.secondName;
-  const fullName=fName+lName;
-  res.json({name:fullName});
-})
-
-
+// app.post("/name",(req,res)=>{
+//   const fName=req.body.firstName;
+//   const lName=req.body.secondName;
+//   const fullName=fName+lName;
+//   res.json({name:fullName});
+// })
 
 
-app.use((req,res,next)=>{
-  const secretcode=req.query.secret;
-  if(secretcode==='1234'){
-    req.isAuthorized=true;
-  }
-  else{
-    req.isAuthorized=false;
-  }
-  next();
-});
 
 
-app.get("/",(req,res)=>{
-  if(req.isAuthorized){
+// app.use((req,res,next)=>{
+//   const secretcode=req.query.secret;
+//   if(secretcode==='1234'){
+//     req.isAuthorized=true;
+//   }
+//   else{
+//     req.isAuthorized=false;
+//   }
+//   next();
+// });
+
+
+// app.get("/",(req,res)=>{
+//   if(req.isAuthorized){
     
-    res.sendFile(path.join(__dirname,"views","calculator.html"));
-  }
-  else{
-    res.send("unathorized");
-  }
-});
+//     res.sendFile(path.join(__dirname,"views","calculator.html"));
+//   }
+//   else{
+//     res.send("unathorized");
+//   }
+// });
 
 
 
@@ -93,6 +95,17 @@ mongoose.connect(URL,{useNewUrlParser:true,useUnifiedTopology:true})
 
 
 
-app.use(express.static(path.join(__dirname,"views")));
+// app.use(express.static(path.join(__dirname,"views")));
 
+async function createUser(){
+ const user=new User({
+    name:"Ankit",
+    email:"777iamankit@gmail.com",
+    password:"1234",
+    age:29,
+  })
+  const result=await user.save();
+  console.log("User created:",result);
+}
 
+createUser();
